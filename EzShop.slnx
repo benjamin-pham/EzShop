@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/EzShop.AppHost/EzShop.AppHost.csproj" />
+    <Project Path="src/EzShop.Contract/EzShop.Contract.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Catalog/">
+    <Project Path="src/Modules/Catalog/EzShop.Module.Catalog.Tests/EzShop.Module.Catalog.Tests.csproj" Id="3f9e46b3-4309-4a3b-8eaf-164e7ac1c43a" />
+    <Project Path="src/Modules/Catalog/EzShop.Module.Catalog/EzShop.Module.Catalog.csproj" Id="c8c63900-eb72-4cc9-8768-a01c2f5fa1df" />
+  </Folder>
+  <Folder Name="/src/Modules/Identity/">
+    <Project Path="src/Modules/Identity/EzShop.Module.Identity.Tests/EzShop.Module.Identity.Tests.csproj" Id="df577e3e-ff9f-499a-924e-110279d7d381" />
+    <Project Path="src/Modules/Identity/EzShop.Module.Identity/EzShop.Module.Identity.csproj" Id="44da87ad-a7ef-4057-bd08-64a4887b2fc9" />
+  </Folder>
+</Solution>

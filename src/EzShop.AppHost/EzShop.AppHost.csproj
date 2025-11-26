@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EzShop.Contract\EzShop.Contract.csproj" />
+    <ProjectReference Include="..\Modules\Catalog\EzShop.Module.Catalog\EzShop.Module.Catalog.csproj" />
+    <ProjectReference Include="..\Modules\Identity\EzShop.Module.Identity\EzShop.Module.Identity.csproj" />
+  </ItemGroup>
+
+</Project>

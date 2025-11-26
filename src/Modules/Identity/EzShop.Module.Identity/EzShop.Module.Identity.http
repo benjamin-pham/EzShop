@@ -1,0 +1,6 @@
+@EzShop.Module.Identity_HostAddress = http://localhost:5155
+
+GET {{EzShop.Module.Identity_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

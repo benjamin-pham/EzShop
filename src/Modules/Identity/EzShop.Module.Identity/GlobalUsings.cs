@@ -1,0 +1,1 @@
+﻿global using EzShop.Contract;

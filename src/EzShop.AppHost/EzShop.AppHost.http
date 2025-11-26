@@ -1,0 +1,6 @@
+@EzShop.AppHost_HostAddress = http://localhost:5024
+
+GET {{EzShop.AppHost_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
