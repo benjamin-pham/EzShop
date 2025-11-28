@@ -45,12 +45,9 @@ public class CallerInfoLogger(ILogger inner, string file, int line, string membe
 
 	private static string TruncateFilePath(string file)
 	{
-		// Tìm và cắt chuỗi từ phần sau '\src\'
-		// Sử dụng InvariantCultureIgnoreCase để tương thích nhiều hệ thống
 		var idx = file.IndexOf("\\src\\", StringComparison.OrdinalIgnoreCase);
 		if (idx >= 0)
 		{
-			// Trả về chuỗi từ vị trí tìm thấy
 			return file.Substring(idx);
 		}
 		return file;
