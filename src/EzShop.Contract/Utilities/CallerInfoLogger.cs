@@ -51,7 +51,7 @@ public class CallerInfoLogger(ILogger inner, string file, int line, string membe
 		var idx = file.IndexOf("\\src\\", StringComparison.OrdinalIgnoreCase);
 		if (idx >= 0)
 		{
-			return file.Substring(idx);
+			return file[idx..];
 		}
 		return file;
 	}
