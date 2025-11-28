@@ -1,9 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-	<ItemGroup>
-		<None Update="appsettings.Identity.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\EzShop.Contract\EzShop.Contract.csproj" />
   </ItemGroup>
