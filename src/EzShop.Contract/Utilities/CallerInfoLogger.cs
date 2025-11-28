@@ -5,7 +5,7 @@ namespace EzShop.Contract.Utilities;
 public class CallerInfoLogger(ILogger inner, string file, int line, string member) : ILogger
 {
 	private readonly ILogger _inner = inner;
-	private readonly string _file = file;
+	private readonly string _file = TruncateFilePath(file);
 	private readonly int _line = line;
 	private readonly string _member = member;
 	public IDisposable? BeginScope<TState>(TState state) where TState : notnull
@@ -25,13 +25,16 @@ public class CallerInfoLogger(ILogger inner, string file, int line, string membe
 	Exception? exception,
 	Func<TState, Exception?, string> formatter)
 	{
-		var displayFile = TruncateFilePath(_file);
+		if (!_inner.IsEnabled(logLevel))
+		{
+			return;
+		}
 
-		string callerInfo = $" at {displayFile}:{_line} {_member}\n";
+		string callerInfo = $" at {_file}:{_line} {_member}\n";
 
 		var dic = new Dictionary<string, object>
 		{
-			["callerFile"] = displayFile,
+			["callerFile"] = _file,
 			["callerLine"] = _line,
 			["callerMember"] = _member,
 			["callerInfo"] = callerInfo
