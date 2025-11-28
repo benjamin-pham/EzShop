@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Serilog.Formatting.Json;
 
 namespace EzShop.Contract.Utilities;
 
@@ -26,14 +25,10 @@ public class CallerInfoLogger(ILogger inner, string file, int line, string membe
 	Exception? exception,
 	Func<TState, Exception?, string> formatter)
 	{
-		var displayFile = _file;
-		var idx = _file.IndexOf("\\src\\", StringComparison.OrdinalIgnoreCase);
-		if (idx >= 0)
-		{
-			displayFile = _file[idx..];
-		}
-		var originalMessage = formatter(state, exception);
+		var displayFile = TruncateFilePath(_file);
+
 		string callerInfo = $" at {displayFile}:{_line} {_member}\n";
+
 		var dic = new Dictionary<string, object>
 		{
 			["callerFile"] = displayFile,
@@ -41,10 +36,23 @@ public class CallerInfoLogger(ILogger inner, string file, int line, string membe
 			["callerMember"] = _member,
 			["callerInfo"] = callerInfo
 		};
-		
+
 		using (_inner.BeginScope(dic))
 		{
 			_inner.Log(logLevel, eventId, state, exception, formatter);
 		}
+	}
+
+	private static string TruncateFilePath(string file)
+	{
+		// Tìm và cắt chuỗi từ phần sau '\src\'
+		// Sử dụng InvariantCultureIgnoreCase để tương thích nhiều hệ thống
+		var idx = file.IndexOf("\\src\\", StringComparison.OrdinalIgnoreCase);
+		if (idx >= 0)
+		{
+			// Trả về chuỗi từ vị trí tìm thấy
+			return file.Substring(idx);
+		}
+		return file;
 	}
 }
