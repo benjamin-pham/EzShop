@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Scalar.AspNetCore;
 using Serilog;
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Text;
 
 namespace EzShop.Contract.ModuleRegister;
 
@@ -16,9 +18,10 @@ public static class ModuleLoader
 	{
 		builder.Host.UseSerilog((context, loggerConfig) =>
 		{
-			loggerConfig.ReadFrom.Configuration(context.Configuration);
+			loggerConfig.ReadFrom.Configuration(context.Configuration).Enrich.FromLogContext();
 		});
-
+		builder.Logging.ClearProviders();
+		builder.Logging.AddSerilog();  // CHÌA KHOÁ QUAN TRỌNG
 		builder.Services.AddOpenApi();
 
 		var moduleManager = FindModules();

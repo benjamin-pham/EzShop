@@ -22,7 +22,7 @@ public abstract class BaseRepository<TEntity, TKey, TDbContext>
 
 	public Task<TEntity?> GetByIdAsync(TKey id)
 	{
-		return _dbSet.SingleOrDefaultAsync(e => e.Id!.Equals(id));
+		return _dbSet.SingleOrDefaultAsync(e => e.Id.Equals(id));
 	}
 
 	public void Add(TEntity entity)
