@@ -20,8 +20,6 @@ public static class ModuleLoader
 		{
 			loggerConfig.ReadFrom.Configuration(context.Configuration).Enrich.FromLogContext();
 		});
-		builder.Logging.ClearProviders();
-		builder.Logging.AddSerilog();  // CHÌA KHOÁ QUAN TRỌNG
 		builder.Services.AddOpenApi();
 
 		var moduleManager = FindModules();
@@ -101,7 +99,7 @@ public static class ModuleLoader
 
 			var endpoints = module.AssemblyTypes
 				.Where(t => typeof(IEndpoint).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
-				.Select(t => (IEndpoint)Activator.CreateInstance(t)!)
+				.Select(t => (IEndpoint)ActivatorUtilities.CreateInstance(app.Services, t)!)
 				.ToList();
 
 			foreach (var endpointType in endpoints)
