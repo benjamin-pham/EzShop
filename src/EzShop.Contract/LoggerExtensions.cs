@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace EzShop.Contract;
 
-public static class LoggerExtensions
+public static partial class LoggerExtensions
 {
 	public static ILogger WithCaller(
 		this ILogger logger,
