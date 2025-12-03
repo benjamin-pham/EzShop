@@ -80,7 +80,7 @@ public static class ModuleLoader
 	{
 		ConfigureModuleServices(builder, moduleManager);
 
-		builder.Services.AddApplicationDbContexts(builder.Configuration, moduleManager);
+		//builder.Services.AddApplicationDbContexts(builder.Configuration, moduleManager);
 
 		builder.Services.AddWithAttributes(moduleManager);
 	}
