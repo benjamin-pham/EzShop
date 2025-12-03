@@ -1,6 +1,7 @@
 ﻿using EzShop.Contract.Infrastructure.Database;
 using EzShop.Contract.ModuleRegister;
 using EzShop.Module.Identity.Infrastructure.Database.Postgres;
+using Microsoft.EntityFrameworkCore;
 
 namespace EzShop.Module.Identity;
 
@@ -16,6 +17,11 @@ public class ModuleRegister : IModule
 
 	public void ConfigureServices(WebApplicationBuilder builder)
 	{
+		builder.Services.AddScoped(provider =>
+		{
+			var options = provider.GetRequiredService<DbContextOptions<IdentityDbContext>>();
+			return new IdentityDbContext(options, Name);
+		});
 		builder.Services.AddDbContext<IdentityDbContext>(Postgres.StandardOptions(builder.Configuration));
 	}
 }
