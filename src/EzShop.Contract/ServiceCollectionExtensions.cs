@@ -41,17 +41,21 @@ internal static class ServiceCollectionExtensions
 		return services;
 	}
 	public static IServiceCollection AddApplicationDbContexts(
-		this IServiceCollection services,
-		IConfiguration configuration,
-		ModuleManager moduleManager)
+	this IServiceCollection services,
+	IConfiguration configuration,
+	ModuleManager moduleManager)
 	{
-		foreach (var module in moduleManager.AppModules)
-		{
-			var dbContextTypes = moduleManager.AppModules.SelectMany(m => m.AssemblyTypes)
+		var allDbContextTypes = moduleManager.AppModules
+			.SelectMany(m => m.AssemblyTypes)
 			.Where(t => !t.IsAbstract && !t.IsGenericTypeDefinition)
 			.Where(t => t.BaseType is { IsGenericType: true } &&
 						t.BaseType.GetGenericTypeDefinition() == typeof(ApplicationDbContext<>))
 			.ToList();
+
+		foreach (var module in moduleManager.AppModules)
+		{
+			var dbContextTypes = allDbContextTypes.Where(t => t.Assembly == module.Assembly)
+				.ToList();
 
 			foreach (var dbContextType in dbContextTypes)
 			{
@@ -64,27 +68,17 @@ internal static class ServiceCollectionExtensions
 
 				var genericMethod = addDbContextMethod.MakeGenericMethod(dbContextType);
 
-				genericMethod.Invoke(
-					null,
-					new object?[]
-					{
-					services,
-					Postgres.StandardOptions(configuration),
-					null,
-					null
-					});
+				genericMethod.Invoke(null, [services, Postgres.StandardOptions(configuration), null, null]);
 
-				//var uowInterfaces = dbContextType.GetInterfaces()
-				//	.Where(i => i != typeof(IBaseUnitOfWork) &&
-				//				typeof(IBaseUnitOfWork).IsAssignableFrom(i))
-				//	.ToList();
+				services.AddScoped(dbContextType, sp =>
+				{
+					var options = sp.GetRequiredService(
+						typeof(DbContextOptions<>).MakeGenericType(dbContextType));
 
-				//foreach (var uowInterface in uowInterfaces)
-				//{
-				//	services.AddScoped(uowInterface, sp => sp.GetRequiredService(dbContextType));
-				//}
+					return Activator.CreateInstance(dbContextType, options, module.Instance.Name)!;
+				});
 			}
-		}		
+		}
 
 		return services;
 	}

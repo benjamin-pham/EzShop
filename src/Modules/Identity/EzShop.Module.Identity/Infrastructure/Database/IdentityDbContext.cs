@@ -1,15 +1,13 @@
 ﻿using EzShop.Contract.Infrastructure.Database;
-using EzShop.Contract.ModuleRegister;
 using Microsoft.EntityFrameworkCore;
 
 namespace EzShop.Module.Identity.Infrastructure.Database;
 
-public class IdentityDbContext(DbContextOptions<IdentityDbContext> options)
-	: ApplicationDbContext<IdentityDbContext>(options)
+public class IdentityDbContext(DbContextOptions<IdentityDbContext> options, string schema) : ApplicationDbContext<IdentityDbContext>(options, schema)
 {
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		modelBuilder.HasDefaultSchema("identity");
+		modelBuilder.HasDefaultSchema(_schema);
 		base.OnModelCreating(modelBuilder);
 	}
 }
