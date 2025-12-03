@@ -2,7 +2,6 @@
 
 public interface IRepository<TEntity, TKey> where TEntity : Entity<TKey> where TKey : notnull
 {
-	IQueryable<TEntity> Queryable { get; }
 	Task<TEntity?> GetByIdAsync(TKey id);
 	void Add(TEntity entity);
 	void Add(IEnumerable<TEntity> entities);

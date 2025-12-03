@@ -12,8 +12,6 @@ public abstract class BaseRepository<TEntity, TKey, TDbContext>
 	protected readonly TDbContext _dbContext;
 	protected readonly DbSet<TEntity> _dbSet;
 
-	public IQueryable<TEntity> Queryable => _dbSet.AsQueryable();
-
 	public BaseRepository(TDbContext dbContext)
 	{
 		_dbContext = dbContext;
