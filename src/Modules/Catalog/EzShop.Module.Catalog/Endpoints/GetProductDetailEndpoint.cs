@@ -11,6 +11,6 @@ public class GetProductDetailEndpoint : IEndpoint
 		{
 			logger.WithCaller().LogInformation("hello");
 			return "product response";
-		}).UseTransaction();
+		});
 	}
 }
