@@ -31,6 +31,10 @@ public abstract class BaseRepository<TEntity, TKey, TDbContext>
 
 	public Task UpdateAsync(params IEnumerable<TEntity> entities)
 	{
+		if (entities.Any(e => _dbContext.ChangeTracker.Entries<TEntity>().Any(x => !ReferenceEquals(x.Entity, e))))
+		{
+			throw new InvalidOperationException("All entities must be loaded from the current DbContext to be updated.");
+		}
 		return Task.CompletedTask;
 	}
 
