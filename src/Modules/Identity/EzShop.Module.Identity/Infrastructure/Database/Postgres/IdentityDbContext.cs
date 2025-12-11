@@ -8,7 +8,7 @@ public class IdentityDbContext(DbContextOptions<IdentityDbContext> options, stri
 {
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		modelBuilder.HasDefaultSchema(_schema);
+		modelBuilder.HasDefaultSchema(Schema);
 		base.OnModelCreating(modelBuilder);
 	}
 }

@@ -1,5 +1,5 @@
 ﻿namespace EzShop.Contract.Abstractions.Messaging;
 
-internal interface IQueryHandler
+public interface IQueryHandler
 {
 }

@@ -1,5 +1,7 @@
-﻿namespace EzShop.Module.Catalog.Domain.Products;
+﻿using EzShop.Contract.Abstractions.Data;
 
-public interface IProductRepository
+namespace EzShop.Module.Catalog.Domain.Products;
+
+public interface IProductRepository : IRepository<Product>
 {
 }

@@ -36,10 +36,10 @@ public static class ModuleLoader
 			options.LowercaseUrls = true;
 		});
 
-		builder.Services.AddControllers(options =>
-		{
-			options.Conventions.Add(new ModuleRoutePrefixConvention(moduleManager));
-		});
+		//builder.Services.AddControllers(options =>
+		//{
+		//	options.Conventions.Add(new ModuleRoutePrefixConvention(moduleManager));
+		//});
 
 		builder.AddModuleServices(moduleManager);
 	}

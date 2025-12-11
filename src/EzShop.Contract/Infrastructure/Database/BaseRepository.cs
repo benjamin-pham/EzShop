@@ -20,37 +20,28 @@ public abstract class BaseRepository<TEntity, TKey, TDbContext>
 
 	public Task<TEntity?> GetByIdAsync(TKey id)
 	{
-		return _dbSet.SingleOrDefaultAsync(e => e.Id.Equals(id));
+		return _dbSet.SingleOrDefaultAsync(e => Equals(e.Id, id));
 	}
 
-	public void Add(TEntity entity)
-	{
-		_dbSet.Add(entity);
-	}
-
-	public void Update(TEntity entity)
-	{
-		_dbSet.Update(entity);
-	}
-
-	public void Remove(TEntity entity)
-	{
-		_dbSet.Remove(entity);
-	}
-
-	public void Add(IEnumerable<TEntity> entities)
+	public Task CreateAsync(params IEnumerable<TEntity> entities)
 	{
 		_dbSet.AddRange(entities);
+		return Task.CompletedTask;
 	}
 
-	public void Update(IEnumerable<TEntity> entities)
+	public Task UpdateAsync(params IEnumerable<TEntity> entities)
 	{
-		_dbSet.UpdateRange(entities);
+		return Task.CompletedTask;
 	}
 
-	public void Remove(IEnumerable<TEntity> entities)
+	public Task DeleteAsync(params IEnumerable<TEntity> entities)
 	{
+		if (entities.Any(e => _dbContext.ChangeTracker.Entries<TEntity>().Any(x => !ReferenceEquals(x.Entity, e))))
+		{
+			throw new InvalidOperationException("All entities must be loaded from the current DbContext to be removed.");
+		}
 		_dbSet.RemoveRange(entities);
+		return Task.CompletedTask;
 	}
 }
 

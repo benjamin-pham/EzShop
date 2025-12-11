@@ -8,7 +8,7 @@ public class CatalogDbContext(DbContextOptions<CatalogDbContext> options, string
 {
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		modelBuilder.HasDefaultSchema(_schema);
+		modelBuilder.HasDefaultSchema(Schema);
 		base.OnModelCreating(modelBuilder);
 	}
 }
