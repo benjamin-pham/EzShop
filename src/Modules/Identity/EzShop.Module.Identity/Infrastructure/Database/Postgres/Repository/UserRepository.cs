@@ -6,7 +6,7 @@ namespace EzShop.Module.Identity.Infrastructure.Database.Postgres.Repository;
 
 [ServiceRegister(ServiceLifetime.Scoped)]
 public sealed class UserRepository(IdentityDbContext dbContext)
-	: BaseRepository<User, IdentityDbContext>(dbContext),
+	: EFRepository<User, IdentityDbContext>(dbContext),
 	IUserRepository
 {
 

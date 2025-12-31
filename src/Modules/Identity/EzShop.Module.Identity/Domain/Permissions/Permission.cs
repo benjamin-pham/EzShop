@@ -2,7 +2,7 @@
 
 namespace EzShop.Module.Identity.Domain.Permissions;
 
-public class Permission : Entity
+public class Permission : AggregateRoot
 {
 	public string Name { get; set; } = null!;
 }

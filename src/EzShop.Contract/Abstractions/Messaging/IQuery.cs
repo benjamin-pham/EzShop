@@ -1,5 +1,7 @@
-﻿namespace EzShop.Contract.Abstractions.Messaging;
+﻿using MediatR;
 
-public interface IQuery
+namespace EzShop.Contract.Abstractions.Messaging;
+
+public interface IQuery<TResponse> : IRequest<TResponse>
 {
 }

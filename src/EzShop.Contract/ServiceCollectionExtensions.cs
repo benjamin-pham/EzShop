@@ -4,6 +4,7 @@ using EzShop.Contract.Utilities.Attributes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Reflection;
 
 namespace EzShop.Contract;
@@ -82,4 +83,6 @@ internal static class ServiceCollectionExtensions
 
 		return services;
 	}
+
+	
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using EzShop.Contract.Utilities;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +21,9 @@ public static class ModuleLoader
 		{
 			loggerConfig.ReadFrom.Configuration(context.Configuration).Enrich.FromLogContext();
 		});
+
+		LoggerProvider.LoggerFactory = builder.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
+
 		builder.Services.AddOpenApi();
 
 		var moduleManager = FindModules();
