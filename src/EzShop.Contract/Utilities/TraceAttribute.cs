@@ -98,9 +98,7 @@ public class TraceAttribute : OnMethodBoundaryAspect
 
 			logger?.LogError(arg.Exception,
 				FormatMessage("Exception in {Method} of {Type}. Execution time: {ElapsedMilliseconds}ms"),
-				PrependMessage(arg.Method.Name, GetTypeName(arg), stopwatch?.ElapsedMilliseconds));
-
-			
+				PrependMessage(arg.Method.Name, GetTypeName(arg), stopwatch?.ElapsedMilliseconds));			
 
 			base.OnException(arg);
 		}
