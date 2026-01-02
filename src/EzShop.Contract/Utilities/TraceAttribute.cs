@@ -163,7 +163,7 @@ public class TraceAttribute : OnMethodBoundaryAspect
 					}
 				}
 
-				LoggerMembersCache[type] = member; // cache, dù null cũng cache
+				LoggerMembersCache[type] = member;
 			}
 
 			// Lấy giá trị member nếu có
