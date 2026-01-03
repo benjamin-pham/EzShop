@@ -12,7 +12,6 @@
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageVersion Include="Scalar.AspNetCore" Version="2.11.0" />
     <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
-    <PackageVersion Include="Serilog.Enrichers.CallerInfo" Version="1.0.6" />
   </ItemGroup>
   <!--test project-->
   <ItemGroup>
