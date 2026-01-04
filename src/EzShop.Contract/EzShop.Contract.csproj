@@ -12,6 +12,5 @@
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
       <PackageReference Include="Scalar.AspNetCore" />
       <PackageReference Include="Serilog.AspNetCore" />
-      <PackageReference Include="Serilog.Enrichers.CallerInfo" />
     </ItemGroup>
 </Project>
