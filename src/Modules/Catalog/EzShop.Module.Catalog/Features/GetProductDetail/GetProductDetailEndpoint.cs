@@ -1,5 +1,4 @@
 ﻿using EzShop.Contract.ModuleRegister;
-using EzShop.Contract.Utilities;
 
 namespace EzShop.Module.Catalog.Features.GetProductDetail;
 
