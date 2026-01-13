@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace EzShop.Contract;
@@ -106,18 +107,25 @@ public static class LoggerExtensions
 			if (string.IsNullOrEmpty(file))
 				return string.Empty;
 
-			var idx = file.IndexOf("\\src\\", StringComparison.OrdinalIgnoreCase);
-			return idx >= 0 ? file[idx..] : file;
+			var patterns = new[] { "\\src\\", "/src/" };
+			foreach (var pattern in patterns)
+			{
+				var idx = file.IndexOf(pattern, StringComparison.OrdinalIgnoreCase);
+				if (idx >= 0)
+					return file[idx..];
+			}
+
+			return Path.GetFileName(file);
 		}
 	}
 
-	private readonly struct CallerInfoLogger<T>(ILogger<T> inner, string file, int line, string member, bool inclueMessagePrefix) : ILogger<T>
+	private readonly struct CallerInfoLogger<T>(ILogger<T> inner, string file, int line, string member, bool includeMessagePrefix) : ILogger<T>
 	{
 		private readonly ILogger<T> _inner = inner ?? throw new ArgumentNullException(nameof(inner));
 		private readonly string _file = TruncateFilePath(file);
 		private readonly int _line = line;
 		private readonly string _member = member;
-		private readonly bool _inclueMessagePrefix = inclueMessagePrefix;
+		private readonly bool _includeMessagePrefix = includeMessagePrefix;
 
 		public IDisposable? BeginScope<TState>(TState state) where TState : notnull
 			=> _inner.BeginScope(state);
@@ -136,7 +144,7 @@ public static class LoggerExtensions
 				return;
 
 			var enrichedState = new EnrichedLogState<TState>(
-				state, _file, _line, _member, _inclueMessagePrefix);
+				state, _file, _line, _member, _includeMessagePrefix);
 
 			_inner.Log(
 				logLevel,
@@ -151,8 +159,15 @@ public static class LoggerExtensions
 			if (string.IsNullOrEmpty(file))
 				return string.Empty;
 
-			var idx = file.IndexOf("\\src\\", StringComparison.OrdinalIgnoreCase);
-			return idx >= 0 ? file[idx..] : file;
+			var patterns = new[] { "\\src\\", "/src/" };
+			foreach (var pattern in patterns)
+			{
+				var idx = file.IndexOf(pattern, StringComparison.OrdinalIgnoreCase);
+				if (idx >= 0)
+					return file[idx..];
+			}
+
+			return Path.GetFileName(file);
 		}
 	}
 

@@ -4,16 +4,11 @@ namespace EzShop.Contract.Utilities;
 
 public static class LoggerProvider
 {
-	private static ILoggerFactory? _loggerFactory;
-	public static ILoggerFactory? LoggerFactory
+	private static ILoggerFactory _loggerFactory = default!;
+	public static ILoggerFactory LoggerFactory => _loggerFactory;
+
+	internal static bool Initialize(ILoggerFactory loggerFactory)
 	{
-		get => _loggerFactory;
-		set
-		{
-			if (_loggerFactory == null)
-			{
-				_loggerFactory = value;
-			}
-		}
+		return Interlocked.CompareExchange(ref _loggerFactory, loggerFactory, null) == null;
 	}
 }

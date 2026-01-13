@@ -4,31 +4,28 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace EzShop.Contract.Utilities;
-
+namespace EzShop.Contract.Utilities.Attributes;
+#pragma warning disable CA2254 // Template should be a static expression
+#pragma warning disable CA1873 // Avoid potentially expensive logging
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class,
 	AllowMultiple = false,
 	Inherited = false)]
 public class TraceAttribute : OnMethodBoundaryAspect
 {
-	private string _message;
+	public string Message { get; init; } = "";
+
+	public bool LogArguments { get; init; } = true;
+
+	public bool LogReturnValue { get; init; } = true;
 
 	private static readonly ConcurrentDictionary<Type, MemberInfo?> LoggerMembersCache = new();
 
-	public bool LogArguments { get; set; } = true;
-
-	public bool LogReturnValue { get; set; } = true;
-
-	public TraceAttribute(string message = "")
-	{
-		_message = message;
-	}
-
 	public override void OnEntry(MethodExecutionArgs arg)
 	{
-		var logger = GetLogger(arg.Instance);
 		try
 		{
+			var logger = GetLogger(arg.Instance);
+
 			var stopwatch = Stopwatch.StartNew();
 
 			arg.MethodExecutionTag = (Logger: logger, Stopwatch: stopwatch);
@@ -50,8 +47,8 @@ public class TraceAttribute : OnMethodBoundaryAspect
 		}
 		catch (Exception ex)
 		{
-			System.Diagnostics.Trace.TraceError(
-				$"TraceAttribute critical error: {ex.Message}");
+			Trace.TraceError(
+				$"TraceAttribute OnEntry critical error: {ex.Message}");
 		}
 	}
 
@@ -76,39 +73,39 @@ public class TraceAttribute : OnMethodBoundaryAspect
 					PrependMessage(arg.Method.Name, GetTypeName(arg), stopwatch?.ElapsedMilliseconds));
 			}
 
-
 			base.OnExit(arg);
 		}
 		catch (Exception ex)
 		{
-			System.Diagnostics.Trace.TraceError(
-				$"TraceAttribute critical error: {ex.Message}");
+			Trace.TraceError(
+				$"TraceAttribute OnExit critical error: {ex.Message}");
 		}
 	}
 
 	public override void OnException(MethodExecutionArgs arg)
 	{
-		arg.FlowBehavior = FlowBehavior.RethrowException;
-
 		try
 		{
+			arg.FlowBehavior = FlowBehavior.RethrowException;
+
 			var (logger, stopwatch) = GetState(arg);
 
 			stopwatch?.Stop();
 
 			logger?.LogError(arg.Exception,
 				FormatMessage("Exception in {Method} of {Type}. Execution time: {ElapsedMilliseconds}ms"),
-				PrependMessage(arg.Method.Name, GetTypeName(arg), stopwatch?.ElapsedMilliseconds));			
+				PrependMessage(arg.Method.Name, GetTypeName(arg), stopwatch?.ElapsedMilliseconds));
 
 			base.OnException(arg);
 		}
 		catch (Exception ex)
 		{
-			System.Diagnostics.Trace.TraceError(
-				$"TraceAttribute critical error: {ex.Message}");
+			Trace.TraceError(
+				$"TraceAttribute OnException critical error: {ex.Message}");
 		}
 	}
-	private (ILogger?, Stopwatch?) GetState(MethodExecutionArgs arg)
+
+	private static (ILogger?, Stopwatch?) GetState(MethodExecutionArgs arg)
 	{
 		var state = arg.MethodExecutionTag as (ILogger?, Stopwatch?)?;
 		return state ?? (null, null);
@@ -116,24 +113,26 @@ public class TraceAttribute : OnMethodBoundaryAspect
 
 	private string FormatMessage(string baseMessage)
 	{
-		return string.IsNullOrEmpty(_message)
+		return string.IsNullOrEmpty(Message)
 			? baseMessage
 			: "{Message} - " + baseMessage;
 	}
 
 	private object?[] PrependMessage(params object?[] args)
 	{
-		return string.IsNullOrEmpty(_message)
+		return string.IsNullOrEmpty(Message)
 			? args
-			: new[] { (object)_message }.Concat(args).ToArray();
+			: [(object)Message, .. args];
 	}
 
-	private string GetTypeName(MethodExecutionArgs arg)
+	private static string GetTypeName(MethodExecutionArgs arg)
 	{
 		return arg.Instance?.GetType().Name
 			?? arg.Method.DeclaringType?.Name
 			?? "Unknown";
 	}
+
+	private static readonly BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
 	private static ILogger? GetLogger(object instance)
 	{
@@ -142,11 +141,9 @@ public class TraceAttribute : OnMethodBoundaryAspect
 		{
 			var type = instance.GetType();
 
-			// Lấy member từ cache hoặc tìm bằng reflection
 			if (!LoggerMembersCache.TryGetValue(type, out var member))
 			{
-				// Tìm field nào có type ILogger hoặc ILogger<T>
-				var field = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+				var field = type.GetFields(flags)
 								.FirstOrDefault(f => typeof(ILogger).IsAssignableFrom(f.FieldType));
 				if (field != null)
 				{
@@ -154,8 +151,7 @@ public class TraceAttribute : OnMethodBoundaryAspect
 				}
 				else
 				{
-					// Tìm property nào có type ILogger hoặc ILogger<T>
-					var prop = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+					var prop = type.GetProperties(flags)
 								   .FirstOrDefault(p => typeof(ILogger).IsAssignableFrom(p.PropertyType));
 					if (prop != null)
 					{
@@ -166,7 +162,6 @@ public class TraceAttribute : OnMethodBoundaryAspect
 				LoggerMembersCache[type] = member;
 			}
 
-			// Lấy giá trị member nếu có
 			if (member != null)
 			{
 				return member switch
@@ -177,12 +172,15 @@ public class TraceAttribute : OnMethodBoundaryAspect
 				};
 			}
 
-			// Fallback LoggerFactory
 			return LoggerProvider.LoggerFactory?.CreateLogger(instance.GetType());
 		}
-		catch
+		catch (Exception ex)
 		{
+			Trace.TraceError(
+				$"TraceAttribute GetLogger critical error: {ex.Message}");
 			return null;
 		}
 	}
 }
+#pragma warning restore CA1873 // Avoid potentially expensive logging
+#pragma warning restore CA2254 // Template should be a static expression

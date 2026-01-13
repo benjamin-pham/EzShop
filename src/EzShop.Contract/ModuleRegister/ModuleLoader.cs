@@ -9,7 +9,6 @@ using Scalar.AspNetCore;
 using Serilog;
 using System.Reflection;
 using System.Runtime.Loader;
-using System.Text;
 
 namespace EzShop.Contract.ModuleRegister;
 
@@ -21,8 +20,6 @@ public static class ModuleLoader
 		{
 			loggerConfig.ReadFrom.Configuration(context.Configuration).Enrich.FromLogContext();
 		});
-
-		LoggerProvider.LoggerFactory = builder.Services.BuildServiceProvider().GetRequiredService<ILoggerFactory>();
 
 		builder.Services.AddOpenApi();
 
@@ -52,6 +49,7 @@ public static class ModuleLoader
 	{
 		app.UseMiddleware<LogContextTraceLoggingMiddleware>();
 		app.UseSerilogRequestLogging();
+		LoggerProvider.Initialize(app.Services.GetRequiredService<ILoggerFactory>());
 		app.UseHttpsRedirection();
 		app.MapOpenApi();
 		app.MapScalarApiReference(options =>
