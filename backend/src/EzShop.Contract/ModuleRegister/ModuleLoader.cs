@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Scalar.AspNetCore;
 using Serilog;
@@ -12,6 +13,9 @@ using Microsoft.OpenApi;
 using Wolverine;
 using Wolverine.FluentValidation;
 using JasperFx.CodeGeneration.Model;
+using OpenTelemetry;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
 
 namespace EzShop.Contract.ModuleRegister;
 
@@ -22,10 +26,10 @@ public static class ModuleLoader
 		builder.Host.UseSerilog((context, loggerConfig) =>
 		{
 			loggerConfig.ReadFrom.Configuration(context.Configuration).Enrich.FromLogContext();
-		});
+		}, preserveStaticLogger: false, writeToProviders: true);
 
 		builder.Services.AddOpenApi();
-		builder.Services.AddHealthChecks();
+		builder.AddServiceDefaults();
 
 		var moduleManager = FindModules();
 
@@ -118,6 +122,7 @@ public static class ModuleLoader
 		app.MapControllers();
 		app.MapRazorPages();
 		app.MapModuleEndpoints();
+		app.MapDefaultEndpoints();
 		app.MapGet("ping", () => "pong!");
 		app.MapFallback(async context =>
 		{
@@ -207,5 +212,96 @@ public static class ModuleLoader
 
 			module.Instance.ConfigureServices(builder);
 		}
+	}
+
+	private static IHostApplicationBuilder AddServiceDefaults(this IHostApplicationBuilder builder)
+	{
+		builder.ConfigureOpenTelemetry();
+
+		builder.AddDefaultHealthChecks();
+
+		builder.Services.AddServiceDiscovery();
+
+		builder.Services.ConfigureHttpClientDefaults(http =>
+		{
+			// Turn on resilience by default
+			http.AddStandardResilienceHandler();
+
+			// Turn on service discovery by default
+			http.AddServiceDiscovery();
+		});
+
+		return builder;
+	}
+
+	private static IHostApplicationBuilder ConfigureOpenTelemetry(this IHostApplicationBuilder builder)
+	{
+		builder.Logging.AddOpenTelemetry(logging =>
+		{
+			logging.IncludeFormattedMessage = true;
+			logging.IncludeScopes = true;
+		});
+
+		builder.Services.AddOpenTelemetry()
+			.WithMetrics(metrics =>
+			{
+				metrics.AddAspNetCoreInstrumentation()
+					   .AddHttpClientInstrumentation()
+					   .AddRuntimeInstrumentation();
+			})
+			.WithTracing(tracing =>
+			{
+				tracing.AddAspNetCoreInstrumentation()
+					   .AddHttpClientInstrumentation()
+					   .AddSource("Npgsql")
+					   .AddSource("Wolverine");
+			});
+
+		builder.AddOpenTelemetryExporters();
+
+		return builder;
+	}
+
+	private static IHostApplicationBuilder AddOpenTelemetryExporters(this IHostApplicationBuilder builder)
+	{
+		var useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
+
+		if (useOtlpExporter)
+		{
+			builder.Services.AddOpenTelemetry().UseOtlpExporter();
+		}
+
+		return builder;
+	}
+
+	private static IHostApplicationBuilder AddDefaultHealthChecks(this IHostApplicationBuilder builder)
+	{
+		builder.Services.AddHealthChecks()
+			// Add a default liveness check to ensure app is responsive
+			.AddCheck("self", () => Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult.Healthy(), ["live"]);
+
+		return builder;
+	}
+
+	private static WebApplication MapDefaultEndpoints(this WebApplication app)
+	{
+		if (app.Environment.IsDevelopment())
+		{
+			app.MapHealthChecks("/health");
+			app.MapHealthChecks("/alive", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+			{
+				Predicate = r => r.Tags.Contains("live")
+			});
+		}
+		else
+		{
+			app.MapHealthChecks("/health");
+			app.MapHealthChecks("/alive", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+			{
+				Predicate = r => r.Tags.Contains("live")
+			});
+		}
+
+		return app;
 	}
 }
