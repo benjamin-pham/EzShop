@@ -47,7 +47,9 @@ public class IdentityModule : IModule
 			.AddCookie(IdentityConstants.ApplicationScheme, options =>
 			{
 				options.LoginPath = "/Identity/Account/Login";
-			});
+			})
+			.AddCookie(IdentityConstants.ExternalScheme)
+			.AddCookie(IdentityConstants.TwoFactorUserIdScheme);
 
 		builder.Services.AddOpenIddict()
 			.AddCore(options =>

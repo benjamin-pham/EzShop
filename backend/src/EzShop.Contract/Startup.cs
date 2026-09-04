@@ -1,4 +1,4 @@
-﻿using EzShop.Contract.ModuleRegister;
+using EzShop.Contract.ModuleRegister;
 using Microsoft.AspNetCore.Builder;
 
 namespace EzShop.Contract;
@@ -11,7 +11,6 @@ public static class Startup
 		builder.AddHostConfigureServices();
 		var app = builder.Build();
 		app.UseHostConfigure();
-		app.MapHealthChecks("/health");
 		app.Run();
 	}
 }
