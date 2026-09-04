@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/EzShop.WebHost/EzShop.WebHost.csproj" />
+    <Project Path="src/EzShop.Contract/EzShop.Contract.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/" />  
+</Solution>

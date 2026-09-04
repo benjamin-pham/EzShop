@@ -1,0 +1,8 @@
+<Project>
+  <Metadata>
+    <Name>EzShop</Name>
+    <Version>1.0</Version>
+  </Metadata>
+
+  <Project Path="EzShop.AppHost/EzShop.AppHost.csproj" />
+</Project>
