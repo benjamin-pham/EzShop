@@ -8,7 +8,7 @@ var webhost = builder.AddProject<Projects.EzShop_WebHost>("api")
     .WithHttpHealthCheck("/health")
     .WithExternalHttpEndpoints();
 
-var admin = builder.AddViteApp("admin-app", "../../frontend/admin")
+var storefrontAdmin = builder.AddViteApp("storefront-admin", "../../frontend/storefront-admin")
     .WithReference(webhost)
     .WaitFor(webhost);
 

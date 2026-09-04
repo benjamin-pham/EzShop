@@ -43,7 +43,7 @@ dotnet run --project src/EzShop.WebHost/EzShop.WebHost.csproj
 
 **Admin Frontend**
 ```bash
-cd frontend/admin
+cd frontend/storefront-admin
 npm install
 npm run dev
 ```
@@ -64,7 +64,7 @@ EzShop/
 │   ├── Directory.Build.props        # Global C# configuration
 │   └── Directory.Packages.props     # Centralized dependency versions
 ├── frontend/
-│   ├── admin/                       # Admin panel (React + Vite + TypeScript)
+│   ├── storefront-admin/            # Admin panel (React + Vite + TypeScript)
 │   └── storefront/                  # Customer storefront (placeholder)
 └── AGENTS.md                        # AI agent customization guide
 ```
@@ -162,7 +162,7 @@ Modules/YourModule/
 dotnet build backend/EzShop.slnx
 
 # Frontend
-cd frontend/admin && npm install && npm run build
+cd frontend/storefront-admin && npm install && npm run build
 ```
 
 ### Adding Backend Dependencies
@@ -230,7 +230,7 @@ Structured logging via **Serilog** with:
 - **AGENTS.md**: Detailed guide for AI agents working in this codebase
 - **aspire/README.md**: Aspire-specific documentation
 - **backend/README.md**: Backend development guide
-- **frontend/admin/README.md**: Frontend development guide
+- **frontend/storefront-admin/README.md**: Frontend development guide
 
 ## 🤝 Contributing
 
