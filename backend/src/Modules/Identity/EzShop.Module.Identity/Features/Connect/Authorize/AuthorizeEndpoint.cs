@@ -32,9 +32,9 @@ public sealed class AuthorizeEndpoint : IEndpoint
 			var request = context.GetOpenIddictServerRequest()
 				?? throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 
-			// Headless authentication: require a valid access token issued by this server.
+			// Use interactive cookie session
 			var authenticateResult = await context.AuthenticateAsync(
-				OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
+				Microsoft.AspNetCore.Identity.IdentityConstants.ApplicationScheme);
 
 			var userId = authenticateResult.Succeeded
 				? authenticateResult.Principal?.GetClaim(Claims.Subject)
@@ -65,5 +65,5 @@ public sealed class AuthorizeEndpoint : IEndpoint
 	private static IResult Challenge() =>
 		Results.Challenge(
 			properties: null,
-			authenticationSchemes: [OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme]);
+			authenticationSchemes: [Microsoft.AspNetCore.Identity.IdentityConstants.ApplicationScheme]);
 }

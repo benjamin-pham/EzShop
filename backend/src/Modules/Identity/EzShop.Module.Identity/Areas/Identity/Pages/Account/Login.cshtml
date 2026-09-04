@@ -1,0 +1,125 @@
+@page
+@model EzShop.Module.Identity.Areas.Identity.Pages.Account.LoginModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log in - EzShop Identity</title>
+    <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+                background-color: #f3f4f6;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                margin: 0;
+            }
+
+            .login-container {
+                background: white;
+                padding: 2rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 400px;
+            }
+
+            h1 {
+                margin-top: 0;
+                color: #111827;
+                font-size: 1.5rem;
+                text-align: center;
+                margin-bottom: 1.5rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 0.5rem;
+                color: #374151;
+                font-weight: 500;
+                font-size: 0.875rem;
+            }
+
+            input[type="email"],
+            input[type="password"] {
+                width: 100%;
+                padding: 0.5rem;
+                border: 1px solid #d1d5db;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+
+            button {
+                width: 100%;
+                padding: 0.75rem;
+                background-color: #4f46e5;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #4338ca;
+            }
+
+            .text-danger {
+                color: #dc2626;
+                font-size: 0.875rem;
+                margin-bottom: 1rem;
+            }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h1>Sign in to EzShop</h1>
+        <form method="post">
+            <input type="hidden" asp-for="ReturnUrl" />
+
+            @if (!ModelState.IsValid)
+            {
+                <div class="text-danger">
+                    @foreach (var modelState in ViewData.ModelState.Values)
+                    {
+                        foreach (var error in modelState.Errors)
+                        {
+                            <div>@error.ErrorMessage</div>
+                        }
+                    }
+                </div>
+            }
+
+            <div class="form-group">
+                <label asp-for="Input.Email">Email</label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Password">Password</label>
+                <input asp-for="Input.Password" class="form-control" autocomplete="current-password"
+                       aria-required="true" />
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                <input asp-for="Input.RememberMe" type="checkbox" />
+                <label asp-for="Input.RememberMe" style="margin: 0;">Remember me</label>
+            </div>
+            <button type="submit">Log in</button>
+        </form>
+    </div>
+</body>
+
+</html>
+

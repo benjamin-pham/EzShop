@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
@@ -35,7 +35,14 @@ public static class ModuleLoader
 		builder.Services.AddCors();
 		builder.Services.AddAuthentication();
 		builder.Services.AddAuthorization();
-		builder.Services.AddControllers();
+		var mvcBuilder = builder.Services.AddControllers();
+		var razorBuilder = builder.Services.AddRazorPages();
+
+		foreach (var module in moduleManager.AppModules)
+		{
+			mvcBuilder.AddApplicationPart(module.Assembly);
+			razorBuilder.AddApplicationPart(module.Assembly);
+		}
 		builder.Services.Configure<RouteOptions>(options =>
 		{
 			options.LowercaseUrls = true;
@@ -109,6 +116,7 @@ public static class ModuleLoader
 		app.UseAuthentication();
 		app.UseAuthorization();
 		app.MapControllers();
+		app.MapRazorPages();
 		app.MapModuleEndpoints();
 		app.MapGet("ping", () => "pong!");
 		app.MapFallback(async context =>

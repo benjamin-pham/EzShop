@@ -43,6 +43,12 @@ public class IdentityModule : IModule
 		.AddEntityFrameworkStores<IdentityDbContext>()
 		.AddDefaultTokenProviders();
 
+		builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
+			.AddCookie(IdentityConstants.ApplicationScheme, options =>
+			{
+				options.LoginPath = "/Identity/Account/Login";
+			});
+
 		builder.Services.AddOpenIddict()
 			.AddCore(options =>
 			{
