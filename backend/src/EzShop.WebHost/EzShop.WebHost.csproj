@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EzShop.Contract\EzShop.Contract.csproj" />
+    <ProjectReference Include="..\Modules\Identity\EzShop.Module.Identity\EzShop.Module.Identity.csproj" />
   </ItemGroup>
 
 </Project>

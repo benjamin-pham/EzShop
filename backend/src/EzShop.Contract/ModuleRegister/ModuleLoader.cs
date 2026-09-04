@@ -9,6 +9,9 @@ using Serilog;
 using System.Reflection;
 using System.Runtime.Loader;
 using Microsoft.OpenApi;
+using Wolverine;
+using Wolverine.FluentValidation;
+using JasperFx.CodeGeneration.Model;
 
 namespace EzShop.Contract.ModuleRegister;
 
@@ -39,6 +42,21 @@ public static class ModuleLoader
 		});
 
 		builder.AddModuleServices(moduleManager);
+
+		builder.Host.UseWolverine(opts =>
+		{
+			// pure in-process mediator usage: no queues, no persistence, MediatR-like request/handler dispatch only.
+			opts.Durability.Mode = DurabilityMode.MediatorOnly;
+			opts.ServiceLocationPolicy = ServiceLocationPolicy.AllowedButWarn;
+			foreach (var module in moduleManager.AppModules)
+			{
+				opts.Discovery.IncludeAssembly(module.Assembly);
+			}
+
+			// discovers IValidator<T> per module assembly and runs it as "before" middleware for any command/query with a matching validator.
+			opts.UseFluentValidation();
+		});
+
 		builder.Services.AddOpenApi("v1", options =>
 		{
 			options.AddDocumentTransformer((document, context, cancellationToken) =>
@@ -62,6 +80,7 @@ public static class ModuleLoader
 
 	public static void UseHostConfigure(this WebApplication app)
 	{
+		app.UseMiddleware<ValidationExceptionMiddleware>();
 		app.UseMiddleware<LogContextTraceLoggingMiddleware>();
 		app.UseSerilogRequestLogging();
 		app.UseHttpsRedirection();
@@ -102,8 +121,6 @@ public static class ModuleLoader
 	private static void AddModuleServices(this WebApplicationBuilder builder, ModuleManager moduleManager)
 	{
 		ConfigureModuleServices(builder, moduleManager);
-
-		//builder.Services.AddApplicationDbContexts(builder.Configuration, moduleManager);
 	}
 
 	private static void MapModuleEndpoints(this WebApplication app)
@@ -120,12 +137,12 @@ public static class ModuleLoader
 
 			var endpoints = module.AssemblyTypes
 				.Where(t => typeof(IEndpoint).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
-				.Select(t => (IEndpoint)ActivatorUtilities.CreateInstance(app.Services, t)!)
+				.Select(t => (IEndpoint)ActivatorUtilities.CreateInstance(app.Services, t))
 				.ToList();
 
 			foreach (var endpointType in endpoints)
 			{
-				endpointType?.MapEndpoint(group);
+				endpointType.MapEndpoint(group);
 			}
 		}
 	}

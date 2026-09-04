@@ -4,12 +4,14 @@
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Elastic.Serilog.Sinks" />
-      <PackageReference Include="MediatR" />
       <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
       <PackageReference Include="Microsoft.OpenApi" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
       <PackageReference Include="Scalar.AspNetCore" />
       <PackageReference Include="Serilog.AspNetCore" />
+      <PackageReference Include="WolverineFx" />
+      <PackageReference Include="WolverineFx.FluentValidation" />
+      <PackageReference Include="WolverineFx.RuntimeCompilation" />
     </ItemGroup>
 </Project>
