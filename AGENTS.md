@@ -230,6 +230,7 @@ When working in this codebase:
 4. **Use MediatR**: Business logic goes in command/query handlers
 5. **Coordinate frontend/backend**: Remember admin app depends on API
 6. **Check existing abstractions**: AggregateRoot, Entity, ReadModel patterns exist for a reason
+7. **Do not modify UI components**: You are NOT allowed to edit or modify files in `frontend/storefront-admin/src/components/ui`.
 
 This architecture supports:
 - ✅ Independent module development
