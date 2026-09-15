@@ -21,20 +21,20 @@ This document helps AI coding agents navigate the EzShop distributed e-commerce 
 
 ```
 EzShop/
+├── apps/
+│   ├── core-api/             # .NET backend services
+│   │   ├── src/
+│   │   │   ├── EzShop.Contract/  # Shared abstractions & module registration
+│   │   │   ├── EzShop.WebHost/   # Main API service
+│   │   │   └── Modules/          # Feature modules (empty - ready for expansion)
+│   │   ├── Directory.Build.props # Project settings (net10.0, nullable, errors as warnings)
+│   │   └── Directory.Packages.props # Centralized dependency versions
+│   ├── storefront-admin-ui/  # Admin panel (React + Vite)
+│   └── storefront-ui/        # Customer storefront (placeholder)
 ├── aspire/                    # Aspire AppHost orchestration
 │   ├── EzShop.AppHost/       # Main orchestrator (Redis, API, Admin frontend)
 │   ├── aspire.config.json    # Aspire configuration
 │   └── EzShop.slnx           # Aspire solution
-├── backend/                   # .NET backend services
-│   ├── src/
-│   │   ├── EzShop.Contract/  # Shared abstractions & module registration
-│   │   ├── EzShop.WebHost/   # Main API service
-│   │   └── Modules/          # Feature modules (empty - ready for expansion)
-│   ├── Directory.Build.props # Project settings (net10.0, nullable, errors as warnings)
-│   └── Directory.Packages.props # Centralized dependency versions
-├── frontend/
-│   ├── storefront-admin/     # Admin panel (React + Vite)
-│   └── storefront/           # Customer storefront (placeholder)
 └── .agents/                  # Custom agent skills for Aspire operations
 ```
 
@@ -97,26 +97,26 @@ This starts Redis, the API, and the admin frontend together. Use the Aspire dash
 - **Modules/**: Feature modules (currently empty, ready for expansion)
 
 ### Adding a New Feature Module
-1. Create a new project in `backend/src/Modules/YourModule/`
+1. Create a new project in `apps/core-api/src/Modules/YourModule/`
 2. Implement `IModule` from EzShop.Contract
 3. Register endpoints via `IEndpoint` implementations
 4. Module will be auto-discovered and loaded by ModuleManager
 5. Add MediatR handlers for your business logic
 
 ### Startup Pattern
-- **Centralized Startup**: [backend/src/EzShop.Contract/Startup.cs](backend/src/EzShop.Contract/Startup.cs) encapsulates service registration
+- **Centralized Startup**: [apps/core-api/src/EzShop.Contract/Startup.cs](apps/core-api/src/EzShop.Contract/Startup.cs) encapsulates service registration
 - All middleware (logging, health checks) configured via ServiceCollectionExtensions
 - LogContextTraceLoggingMiddleware for distributed tracing
 
 ### Logging
 - Uses **Serilog.AspNetCore** with ElasticSearch sink
 - Structured logging with trace context
-- Configuration in [backend/src/EzShop.WebHost/appsettings.*.json](backend/src/EzShop.WebHost/appsettings.Development.json)
+- Configuration in [apps/core-api/src/EzShop.WebHost/appsettings.*.json](apps/core-api/src/EzShop.WebHost/appsettings.Development.json)
 
 ## Frontend Development
 
 ### Admin Application
-Located in [frontend/storefront-admin/](frontend/storefront-admin/):
+Located in [apps/storefront-admin-ui/](apps/storefront-admin-ui/):
 - **Build tool**: Vite (fast development + optimized builds)
 - **Framework**: React 19.2 + TypeScript 6.0
 - **Package manager**: npm
@@ -136,7 +136,7 @@ npm run preview  # Preview production build
 - Will wait for API to be healthy before starting
 
 ### Storefront
-Currently a placeholder in [frontend/storefront/](frontend/storefront/) for customer-facing UI.
+Currently a placeholder in [apps/storefront-ui/](apps/storefront-ui/) for customer-facing UI.
 
 ## Code Quality & Standards
 
@@ -166,14 +166,14 @@ aspire start
 ### Build Everything
 ```bash
 # Backend
-dotnet build backend/EzShop.slnx
+dotnet build apps/core-api/EzShop.slnx
 
 # Frontend
-cd frontend/storefront-admin && npm install && npm run build
+cd apps/storefront-admin-ui && npm install && npm run build
 ```
 
 ### Add a Backend Dependency
-Edit [backend/Directory.Packages.props](backend/Directory.Packages.props) to update centralized versions, then reference in .csproj:
+Edit [apps/core-api/Directory.Packages.props](apps/core-api/Directory.Packages.props) to update centralized versions, then reference in .csproj:
 ```xml
 <PackageReference Include="PackageName" />
 ```
@@ -204,7 +204,7 @@ Edit [backend/Directory.Packages.props](backend/Directory.Packages.props) to upd
 
 ### Build Order
 When adding new modules:
-1. Add to `backend/src/Modules/`
+1. Add to `apps/core-api/src/Modules/`
 2. Reference from EzShop.WebHost
 3. Module auto-discovered during Startup
 4. No manual registration needed beyond implementing IModule

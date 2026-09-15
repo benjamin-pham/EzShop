@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\backend\src\EzShop.WebHost\EzShop.WebHost.csproj" />
+    <ProjectReference Include="..\..\apps\core-api\src\EzShop.WebHost\EzShop.WebHost.csproj" />
   </ItemGroup>
 
   <ItemGroup>
