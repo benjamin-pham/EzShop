@@ -13,7 +13,7 @@ var identity = builder.AddProject("identity", "../apps/identity/src/EzShop.Ident
     .WaitFor(cache)
     .WithExternalHttpEndpoints();
 
-var storefrontAdmin = builder.AddViteApp("storefront-admin-ui", "../apps/storefront-admin-ui")
+var storefrontAdmin = builder.AddViteApp("storefront-admin-web", "../apps/storefront-admin-web")
     .WithReference(webhost)
     .WaitFor(webhost);
 

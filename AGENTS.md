@@ -29,8 +29,8 @@ EzShop/
 │   │   │   └── Modules/          # Feature modules (empty - ready for expansion)
 │   │   ├── Directory.Build.props # Project settings (net10.0, nullable, errors as warnings)
 │   │   └── Directory.Packages.props # Centralized dependency versions
-│   ├── storefront-admin-ui/  # Admin panel (React + Vite)
-│   └── storefront-ui/        # Customer storefront (placeholder)
+│   ├── storefront-admin-web/  # Admin panel (React + Vite)
+│   └── storefront-web/        # Customer storefront (placeholder)
 ├── aspire/                    # Aspire AppHost orchestration
 │   ├── EzShop.AppHost/       # Main orchestrator (Redis, API, Admin frontend)
 │   ├── aspire.config.json    # Aspire configuration
@@ -116,7 +116,7 @@ This starts Redis, the API, and the admin frontend together. Use the Aspire dash
 ## Frontend Development
 
 ### Admin Application
-Located in [apps/storefront-admin-ui/](apps/storefront-admin-ui/):
+Located in [apps/storefront-admin-web/](apps/storefront-admin-web/):
 - **Build tool**: Vite (fast development + optimized builds)
 - **Framework**: React 19.2 + TypeScript 6.0
 - **Package manager**: npm
@@ -136,7 +136,7 @@ npm run preview  # Preview production build
 - Will wait for API to be healthy before starting
 
 ### Storefront
-Currently a placeholder in [apps/storefront-ui/](apps/storefront-ui/) for customer-facing UI.
+Currently a placeholder in [apps/storefront-web/](apps/storefront-web/) for customer-facing UI.
 
 ## Code Quality & Standards
 
@@ -169,7 +169,7 @@ aspire start
 dotnet build apps/core-api/EzShop.slnx
 
 # Frontend
-cd apps/storefront-admin-ui && npm install && npm run build
+cd apps/storefront-admin-web && npm install && npm run build
 ```
 
 ### Add a Backend Dependency

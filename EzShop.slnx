@@ -13,7 +13,7 @@
     <Project Path="apps/identity/src/EzShop.Identity.WebHost/EzShop.Identity.WebHost.csproj" />
   </Folder>
   <Folder Name="/apps/">
-    <Project Path="apps/storefront-admin-ui/storefront-admin-ui.esproj" />
+    <Project Path="apps/storefront-admin-web/storefront-admin-web.esproj" />
   </Folder>
   <Project Path="aspire/aspire.csproj" />
 </Solution>
