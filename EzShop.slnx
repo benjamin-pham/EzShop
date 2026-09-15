@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/apps/core-api/">
+    <Project Path="apps/core-api/src/EzShop.Contract/EzShop.Contract.csproj" />
+    <Project Path="apps/core-api/src/EzShop.Testing.Shared/EzShop.Testing.Shared.csproj" />
+    <Project Path="apps/core-api/src/EzShop.WebHost/EzShop.WebHost.csproj" />
+  </Folder>
+  <Folder Name="/apps/core-api/Modules/" />
+  <Folder Name="/apps/identity/">
+    <Project Path="apps/identity/src/EzShop.Identity.Application/EzShop.Identity.Application.csproj" />
+    <Project Path="apps/identity/src/EzShop.Identity.Domain/EzShop.Identity.Domain.csproj" />
+    <Project Path="apps/identity/src/EzShop.Identity.Infrastructure/EzShop.Identity.Infrastructure.csproj" />
+    <Project Path="apps/identity/src/EzShop.Identity.Tests/EzShop.Identity.Tests.csproj" />
+    <Project Path="apps/identity/src/EzShop.Identity.WebHost/EzShop.Identity.WebHost.csproj" />
+  </Folder>
+  <Folder Name="/apps/">
+    <Project Path="apps/storefront-admin-ui/storefront-admin-ui.esproj" />
+  </Folder>
+  <Project Path="aspire/aspire.csproj" />
+</Solution>

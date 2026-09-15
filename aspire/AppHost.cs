@@ -2,18 +2,18 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var cache = builder.AddRedis("cache");
 
-var webhost = builder.AddProject<Projects.EzShop_WebHost>("api")
+var webhost = builder.AddProject("core-api", "../apps/core-api/src/EzShop.WebHost/EzShop.WebHost.csproj")
     .WithReference(cache)
     .WaitFor(cache)
     .WithHttpHealthCheck("/health")
     .WithExternalHttpEndpoints();
 
-var identity = builder.AddProject<Projects.EzShop_Identity_WebHost>("identity")
+var identity = builder.AddProject("identity", "../apps/identity/src/EzShop.Identity.WebHost/EzShop.Identity.WebHost.csproj")
     .WithReference(cache)
     .WaitFor(cache)
     .WithExternalHttpEndpoints();
 
-var storefrontAdmin = builder.AddViteApp("storefront-admin-ui", "../../apps/storefront-admin-ui")
+var storefrontAdmin = builder.AddViteApp("storefront-admin-ui", "../apps/storefront-admin-ui")
     .WithReference(webhost)
     .WaitFor(webhost);
 

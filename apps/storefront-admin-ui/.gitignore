@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Build output
+obj/
+bin/
+Debug/
+obj\\Debug/
