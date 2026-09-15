@@ -10,10 +10,4 @@
     <Project Path="src/EzShop.WebHost/EzShop.WebHost.csproj" />
     <Project Path="src/EzShop.Contract/EzShop.Contract.csproj" />
   </Folder>
-  <Folder Name="/src/Modules/">
-    <Project Path="src/Modules/Identity/EzShop.Module.Identity/EzShop.Module.Identity.csproj" />
-  </Folder>
-  <Folder Name="/src/Modules/Identity/">
-    <Project Path="src/Modules/Identity/EzShop.Module.Identity.Tests/EzShop.Module.Identity.Tests.csproj" />
-  </Folder>
 </Solution>

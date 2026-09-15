@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/EzShop.Identity.Domain/EzShop.Identity.Domain.csproj" />
+    <Project Path="src/EzShop.Identity.Application/EzShop.Identity.Application.csproj" />
+    <Project Path="src/EzShop.Identity.Infrastructure/EzShop.Identity.Infrastructure.csproj" />
+    <Project Path="src/EzShop.Identity.WebHost/EzShop.Identity.WebHost.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="src/EzShop.Identity.Tests/EzShop.Identity.Tests.csproj" />
+  </Folder>
+</Solution>

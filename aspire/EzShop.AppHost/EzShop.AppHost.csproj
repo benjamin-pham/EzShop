@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\apps\core-api\src\EzShop.WebHost\EzShop.WebHost.csproj" />
+    <ProjectReference Include="..\..\apps\identity\src\EzShop.Identity.WebHost\EzShop.Identity.WebHost.csproj" />
   </ItemGroup>
 
   <ItemGroup>
