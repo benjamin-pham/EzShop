@@ -11,7 +11,4 @@
     <Project Path="src/EzShop.Identity.Infrastructure/EzShop.Identity.Infrastructure.csproj" />
     <Project Path="src/EzShop.Identity.WebHost/EzShop.Identity.WebHost.csproj" />
   </Folder>
-  <Folder Name="/tests/">
-    <Project Path="src/EzShop.Identity.Tests/EzShop.Identity.Tests.csproj" />
-  </Folder>
 </Solution>

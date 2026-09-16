@@ -1,6 +1,6 @@
 using System.Security.Claims;
-using EzShop.Contract.Abstractions;
-using EzShop.Contract.Abstractions.Messaging;
+using EzShop.Identity.Domain.Abstractions;
+using EzShop.Identity.Application.Messaging;
 using EzShop.Identity.Domain;
 using EzShop.Identity.Application.Features.Connect.Shared;
 using Microsoft.AspNetCore.Identity;

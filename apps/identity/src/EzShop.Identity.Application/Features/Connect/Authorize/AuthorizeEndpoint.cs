@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using EzShop.Contract.ModuleRegister;
+using EzShop.Identity.Application.Common;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -12,7 +12,7 @@ using Wolverine;
 using EzShop.Identity.Application.Features.Connect.Authorize;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace EzShop.Identity.WebHost.Features.Connect.Authorize;
+namespace EzShop.Identity.Application.Features.Connect.Authorize;
 
 /// <summary>
 /// OIDC authorization endpoint (authorization code flow with PKCE).

@@ -10,6 +10,7 @@
     <PackageReference Include="OpenIddict.EntityFrameworkCore" />
   </ItemGroup>
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <ProjectReference Include="..\EzShop.Identity.Application\EzShop.Identity.Application.csproj" />
   </ItemGroup>
 </Project>

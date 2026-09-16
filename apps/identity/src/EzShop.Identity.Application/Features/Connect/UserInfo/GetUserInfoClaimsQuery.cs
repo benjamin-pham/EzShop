@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using EzShop.Contract.Abstractions.Messaging;
+using EzShop.Identity.Application.Messaging;
 
 namespace EzShop.Identity.Application.Features.Connect.UserInfo;
 

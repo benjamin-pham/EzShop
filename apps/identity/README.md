@@ -28,7 +28,7 @@ src/
 
 ### Key Components
 
-- **`EzShop.Identity.Domain`**: Contains the core business entities. It references `EzShop.Contract` from the `core-api` to share base abstractions.
+- **`EzShop.Identity.Domain`**: Contains the core business entities. It references its own `EzShop.Identity.Contract` to share base abstractions.
 - **`EzShop.Identity.Application`**: Business logic using **WolverineFx** for message routing (Commands/Queries) and `FluentValidation` for validation.
 - **`EzShop.Identity.Infrastructure`**: Implements the persistence layer with EF Core, and wires up ASP.NET Core Identity stores alongside OpenIddict stores.
 - **`EzShop.Identity.WebHost`**: Uses a centralized `Startup.Run(args)` pattern (via `EzShop.Contract`). It exposes the standard OAuth2/OIDC endpoints (Authorize, Token, Logout, UserInfo) and custom account management endpoints.

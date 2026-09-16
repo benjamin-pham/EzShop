@@ -1,10 +1,10 @@
-using EzShop.Contract.ModuleRegister;
+using EzShop.Identity.Application.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using OpenIddict.Server.AspNetCore;
 
-namespace EzShop.Identity.WebHost.Features.Connect.Logout;
+namespace EzShop.Identity.Application.Features.Connect.Logout;
 
 /// <summary>
 /// OIDC end session endpoint: signs the user out and redirects the user agent

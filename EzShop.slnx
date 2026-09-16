@@ -9,7 +9,6 @@
     <Project Path="apps/identity/src/EzShop.Identity.Application/EzShop.Identity.Application.csproj" />
     <Project Path="apps/identity/src/EzShop.Identity.Domain/EzShop.Identity.Domain.csproj" />
     <Project Path="apps/identity/src/EzShop.Identity.Infrastructure/EzShop.Identity.Infrastructure.csproj" />
-    <Project Path="apps/identity/src/EzShop.Identity.Tests/EzShop.Identity.Tests.csproj" />
     <Project Path="apps/identity/src/EzShop.Identity.WebHost/EzShop.Identity.WebHost.csproj" />
   </Folder>
   <Folder Name="/apps/">

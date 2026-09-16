@@ -1,4 +1,4 @@
-using EzShop.Contract.ModuleRegister;
+using EzShop.Identity.Application.Common;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +8,7 @@ using Wolverine;
 using EzShop.Identity.Application.Features.Connect.UserInfo;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace EzShop.Identity.WebHost.Features.Connect.UserInfo;
+namespace EzShop.Identity.Application.Features.Connect.UserInfo;
 
 /// <summary>
 /// OIDC userinfo endpoint: returns claims about the authenticated user.

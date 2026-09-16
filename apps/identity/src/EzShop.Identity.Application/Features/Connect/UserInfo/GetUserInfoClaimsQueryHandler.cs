@@ -1,4 +1,4 @@
-using EzShop.Contract.Abstractions.Messaging;
+using EzShop.Identity.Application.Messaging;
 using EzShop.Identity.Domain;
 using Microsoft.AspNetCore.Identity;
 using OpenIddict.Abstractions;

@@ -1,6 +1,7 @@
 using System.Security.Claims;
-using EzShop.Contract.Abstractions;
-using EzShop.Contract.ModuleRegister;
+using EzShop.Identity.Domain.Abstractions;
+using EzShop.Identity.Application.Common.Extensions;
+using EzShop.Identity.Application.Common;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -12,7 +13,7 @@ using Wolverine;
 using EzShop.Identity.Application.Features.Connect.Token;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace EzShop.Identity.WebHost.Features.Connect.Token;
+namespace EzShop.Identity.Application.Features.Connect.Token;
 
 /// <summary>
 /// OAuth2/OIDC token endpoint: handles password, client credentials,

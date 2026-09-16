@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\core-api\src\EzShop.Contract\EzShop.Contract.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" />
+    
   </ItemGroup>
 </Project>

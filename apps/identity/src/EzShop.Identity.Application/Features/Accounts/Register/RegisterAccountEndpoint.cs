@@ -1,12 +1,13 @@
-using EzShop.Contract.Abstractions;
-using EzShop.Contract.ModuleRegister;
+using EzShop.Identity.Domain.Abstractions;
+using EzShop.Identity.Application.Common.Extensions;
+using EzShop.Identity.Application.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Wolverine;
 using EzShop.Identity.Application.Features.Accounts.Register;
 
-namespace EzShop.Identity.WebHost.Features.Accounts.Register;
+namespace EzShop.Identity.Application.Features.Accounts.Register;
 
 /// <summary>
 /// Self-service account registration endpoint.
