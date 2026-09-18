@@ -1,13 +1,28 @@
 <Solution>
-  <Folder Name="/apps/core-api/">
-    <Project Path="apps/core-api/src/EzShop.Contract/EzShop.Contract.csproj" />
+  <Folder Name="/apps/core-api/" />
+  <Folder Name="/apps/core-api/Solution Items/">
+    <File Path="apps/core-api/.editorconfig" />
+    <File Path="apps/core-api/.gitignore" />
+    <File Path="apps/core-api/Directory.Build.props" />
+    <File Path="apps/core-api/Directory.Packages.props" />
+    <File Path="apps\core-api\README.md" />
+  </Folder>
+  <Folder Name="/apps/core-api/src/">
     <Project Path="apps/core-api/src/EzShop.Testing.Shared/EzShop.Testing.Shared.csproj" />
     <Project Path="apps/core-api/src/EzShop.WebHost/EzShop.WebHost.csproj" />
+    <Project Path="apps/core-api/src/EzShop.Contract/EzShop.Contract.csproj" />
   </Folder>
-  <Folder Name="/apps/core-api/Modules/" />
-  <Folder Name="/apps/identity/">
-    <Project Path="apps/identity/src/EzShop.Identity.Application/EzShop.Identity.Application.csproj" />
+  <Folder Name="/apps/identity/" />
+  <Folder Name="/apps/identity/Solution Items/">
+    <File Path="apps/identity/.editorconfig" />
+    <File Path="apps/identity/.gitignore" />
+    <File Path="apps/identity/Directory.Build.props" />
+    <File Path="apps/identity/Directory.Packages.props" />
+    <File Path="apps\identity\README.md" />
+  </Folder>
+  <Folder Name="/apps/identity/src/">
     <Project Path="apps/identity/src/EzShop.Identity.Domain/EzShop.Identity.Domain.csproj" />
+    <Project Path="apps/identity/src/EzShop.Identity.Application/EzShop.Identity.Application.csproj" />
     <Project Path="apps/identity/src/EzShop.Identity.Infrastructure/EzShop.Identity.Infrastructure.csproj" />
     <Project Path="apps/identity/src/EzShop.Identity.WebHost/EzShop.Identity.WebHost.csproj" />
   </Folder>

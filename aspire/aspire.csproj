@@ -7,6 +7,7 @@
     <Nullable>enable</Nullable>
     <AspireUseCliBundle>true</AspireUseCliBundle>
     <UserSecretsId>f14be765-1df0-4570-b1d0-c24e16d9372f</UserSecretsId>
+    <NuGetAudit>false</NuGetAudit>
   </PropertyGroup>
 
   <ItemGroup>

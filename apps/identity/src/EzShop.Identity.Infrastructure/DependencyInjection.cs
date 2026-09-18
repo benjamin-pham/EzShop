@@ -57,7 +57,11 @@ public static class DependencyInjection
                 options.SetAuthorizationEndpointUris("/api/identity/connect/authorize")
                     .SetTokenEndpointUris("/api/identity/connect/token")
                     .SetUserInfoEndpointUris("/api/identity/connect/userinfo")
-                    .SetEndSessionEndpointUris("/api/identity/connect/logout");
+                    .SetEndSessionEndpointUris("/api/identity/connect/logout")
+                    .SetIntrospectionEndpointUris("/api/identity/connect/introspect")
+                    .SetRevocationEndpointUris("/api/identity/connect/revoke")
+                    .SetConfigurationEndpointUris("/api/identity/.well-known/openid-configuration")
+                    .SetJsonWebKeySetEndpointUris("/api/identity/.well-known/jwks");
 
                 options.AllowAuthorizationCodeFlow()
                     .AllowClientCredentialsFlow()
@@ -76,11 +80,7 @@ public static class DependencyInjection
                     .SetAuthorizationCodeLifetime(TimeSpan.FromMinutes(5))
                     .SetRefreshTokenLifetime(TimeSpan.FromDays(14));
 
-                options.UseAspNetCore()
-                    .EnableAuthorizationEndpointPassthrough()
-                    .EnableTokenEndpointPassthrough()
-                    .EnableUserInfoEndpointPassthrough()
-                    .EnableEndSessionEndpointPassthrough();
+                options.UseAspNetCore();
             })
             .AddValidation(options =>
             {

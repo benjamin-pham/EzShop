@@ -18,6 +18,8 @@ using Wolverine;
 using Wolverine.FluentValidation;
 using JasperFx.CodeGeneration.Model;
 using EzShop.Identity.WebHost;
+using Wolverine.EntityFrameworkCore;
+using Wolverine.Postgresql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,11 +51,16 @@ builder.Services.Configure<RouteOptions>(options =>
 
 builder.Host.UseWolverine(opts =>
 {
-    opts.Durability.Mode = DurabilityMode.MediatorOnly;
+    var connectionString = builder.Configuration.GetConnectionString("Database") 
+        ?? throw new InvalidOperationException("Database connection string not found.");
+        
+    opts.PersistMessagesWithPostgresql(connectionString, "identity_bus");
+    opts.UseEntityFrameworkCoreTransactions();
+
     opts.ServiceLocationPolicy = ServiceLocationPolicy.AllowedButWarn;
     
     // Discover handlers from the Application assembly
-    opts.Discovery.IncludeAssembly(typeof(EzShop.Identity.Application.Common.IEndpoint).Assembly);
+    opts.Discovery.IncludeAssembly(typeof(EzShop.Identity.Application.IntegrationEvents.CustomerRegisteredIntegrationEventHandler).Assembly);
     
     opts.UseFluentValidation();
 });
@@ -114,7 +121,8 @@ app.MapRazorPages();
 
 // Map all endpoints discovered in the assembly
 var apiGroup = app.MapGroup("/api/Identity").WithTags("Identity");
-var endpoints = typeof(Program).Assembly.GetTypes()
+var endpoints = new[] { typeof(Program).Assembly, typeof(EzShop.Identity.Application.Common.IEndpoint).Assembly }
+    .SelectMany(a => a.GetTypes())
     .Where(t => typeof(IEndpoint).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
     .Select(t => (IEndpoint)ActivatorUtilities.CreateInstance(app.Services, t))
     .ToList();
