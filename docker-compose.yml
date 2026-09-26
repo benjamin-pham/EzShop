@@ -1,6 +1,0 @@
-include:
-  - infra/postgres.yml
-  - infra/pgadmin.yml
-  - infra/redis.yml
-  - infra/elasticsearch.yml
-  - infra/kibana.yml

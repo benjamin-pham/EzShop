@@ -1,29 +1,34 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var db = builder.AddConnectionString("Database");
-var cache = builder.AddConnectionString("cache");
+var cache = builder.AddRedis("cache")
+    .WithDataVolume("ezshop-redis-data")
+    .WithRedisCommander();
 
-// Các Dummy resource để hiển thị các dịch vụ từ Docker Compose lên Aspire Dashboard
-var pgadminUi = builder.AddExecutable("pgadmin", "sleep", ".", "infinity")
-    .WithHttpEndpoint(port: 5050, name: "ui", isProxied: false);
+var postgres = builder.AddPostgres("postgres")
+    .WithDataVolume("ezshop-pg-data")
+    .WithPgAdmin();
 
-var postgresUi = builder.AddExecutable("postgres", "sleep", ".", "infinity")
-    .WithEndpoint(port: 5434, name: "tcp", scheme: "tcp", isProxied: false);
+var db = postgres.AddDatabase("Database", databaseName: "ezshop");
 
-var redisUi = builder.AddExecutable("redis", "sleep", ".", "infinity")
-    .WithEndpoint(port: 6379, name: "tcp", scheme: "tcp", isProxied: false);
+var elasticsearch = builder.AddElasticsearch("elasticsearch")
+    .WithDataVolume("ezshop-elastic-data")
+    .WithEndpoint(port: 9222, targetPort: 9200, name: "http");
 
-var elasticUi = builder.AddExecutable("elasticsearch", "sleep", ".", "infinity")
-    .WithEndpoint(port: 9222, name: "http", scheme: "http", isProxied: false);
-
-var kibanaUi = builder.AddExecutable("kibana", "sleep", ".", "infinity")
-    .WithHttpEndpoint(port: 5601, name: "ui", isProxied: false);
+var kibana = builder.AddContainer("kibana", "docker.elastic.co/kibana/kibana", "8.15.0") // Dùng chung version với Elasticsearch nếu cần
+    .WithEnvironment("ELASTICSEARCH_HOSTS", elasticsearch.GetEndpoint("http"))
+    .WithHttpEndpoint(port: 5601, targetPort: 5601, name: "ui");
 
 var identity = builder.AddProject("identity", "../apps/identity/src/EzShop.Identity.WebHost/EzShop.Identity.WebHost.csproj")
     .WithReference(db)
     .WaitFor(db)
     .WithReference(cache)
     .WaitFor(cache)
+    .WithReference(elasticsearch)
+    .WaitFor(elasticsearch)
+    .WithEnvironment("Serilog__WriteTo__1__Args__nodes__0", elasticsearch.GetEndpoint("http"))
+    // .WithEnvironment("Serilog__WriteTo__1__Args__apiKey", builder.AddParameter("identity-elastic-api-key", secret: true))
+    .WithEnvironment("Serilog__WriteTo__1__Args__dataStream", "logs-ezshop-identity")
+    .WithEnvironment("Serilog__WriteTo__1__Args__bootstrapMethod", "Silent")
     .WithExternalHttpEndpoints();
 
 var coreApi = builder.AddProject("core-api", "../apps/core-api/src/EzShop.WebHost/EzShop.WebHost.csproj")
@@ -31,6 +36,12 @@ var coreApi = builder.AddProject("core-api", "../apps/core-api/src/EzShop.WebHos
     .WaitFor(db)
     .WithReference(cache)
     .WaitFor(cache)
+    .WithReference(elasticsearch)
+    .WaitFor(elasticsearch)
+    .WithEnvironment("Serilog__WriteTo__1__Args__nodes__0", elasticsearch.GetEndpoint("http"))
+    // .WithEnvironment("Serilog__WriteTo__1__Args__apiKey", builder.AddParameter("coreapi-elastic-api-key", secret: true))
+    .WithEnvironment("Serilog__WriteTo__1__Args__dataStream", "logs-ezshop-coreapi")
+    .WithEnvironment("Serilog__WriteTo__1__Args__bootstrapMethod", "Silent")
     .WithReference(identity)
     .WaitFor(identity)
     .WithHttpHealthCheck("/health")
