@@ -1,11 +1,7 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgres = builder.AddPostgres("postgres")
-    .WithPgAdmin()
-    .WithDataVolume();
-var db = postgres.AddDatabase("Database");
-
-var cache = builder.AddRedis("cache");
+var db = builder.AddConnectionString("Database");
+var cache = builder.AddConnectionString("cache");
 
 var identity = builder.AddProject("identity", "../apps/identity/src/EzShop.Identity.WebHost/EzShop.Identity.WebHost.csproj")
     .WithReference(db)
