@@ -13,6 +13,12 @@ var postgresUi = builder.AddExecutable("postgres", "sleep", ".", "infinity")
 var redisUi = builder.AddExecutable("redis", "sleep", ".", "infinity")
     .WithEndpoint(port: 6379, name: "tcp", scheme: "tcp", isProxied: false);
 
+var elasticUi = builder.AddExecutable("elasticsearch", "sleep", ".", "infinity")
+    .WithEndpoint(port: 9222, name: "http", scheme: "http", isProxied: false);
+
+var kibanaUi = builder.AddExecutable("kibana", "sleep", ".", "infinity")
+    .WithHttpEndpoint(port: 5601, name: "ui", isProxied: false);
+
 var identity = builder.AddProject("identity", "../apps/identity/src/EzShop.Identity.WebHost/EzShop.Identity.WebHost.csproj")
     .WithReference(db)
     .WaitFor(db)
