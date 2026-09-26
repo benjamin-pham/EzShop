@@ -1,3 +1,4 @@
 include:
   - postgres.yml
+  - pgadmin.yml
   - redis.yml
