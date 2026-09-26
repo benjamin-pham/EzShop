@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ezshop-postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: Admin@123456
+      POSTGRES_DB: ezshop
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - ezshop-net
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: ezshop-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ezshop.local
+      PGADMIN_DEFAULT_PASSWORD: Admin@123456
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - ezshop-net
+
+volumes:
+  postgres-data:
+
+networks:
+  ezshop-net:
+    name: ezshop-net
+    driver: bridge

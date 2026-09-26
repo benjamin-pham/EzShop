@@ -1,0 +1,19 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: ezshop-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - ezshop-net
+
+volumes:
+  redis-data:
+
+networks:
+  ezshop-net:
+    name: ezshop-net
+    driver: bridge
